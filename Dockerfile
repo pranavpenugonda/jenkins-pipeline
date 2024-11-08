@@ -1,17 +1,8 @@
-FROM  centos:latest
-MAINTAINER mailtomohan.in@gmail.com
-RUN cd /etc/yum.repos.d/
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-RUN yum install httpd -y
-ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
-WORKDIR /var/www/html/
-RUN yum install zip unzip -y
-RUN unzip photogenic.zip
-RUN cp -rvf photogenic/* .
-RUN rm -rf photogenic photogenic.zip
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-EXPOSE 80 22
+FROM nginx:alpine
 
-#port 22 (ssh)
-#port 80
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY todo_item_dynamically.html /usr/share/nginx/html/todo_item_dynamically.html
+COPY todo_item_dynamically.css /usr/share/nginx/html/todo_item_dynamically.css
+COPY todo_item_dynamically.js /usr/share/nginx/html/todo_item_dynamically.js
+
+EXPOSE 8080
