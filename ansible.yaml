@@ -3,7 +3,8 @@
   tasks:
 
     - name: create new deployment
-      command: kubectl apply -f /home/ubuntu/Deployment.yaml
+      command: kubectl apply --validate=true --dry-run=client -f /home/ubuntu/Deployment.yaml
+
       environment:
         KUBECONFIG: ~/.kube/config
         
