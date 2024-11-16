@@ -1,39 +1,49 @@
 - hosts: all
   become: true
   tasks:
+    - name: Delete existing minikube cluster if exists
+      command: minikube delete
+      ignore_errors: yes
+      
+    - name: Start minikube
+      command: minikube start --driver=docker
+      register: minikube_start
+      
     - name: Wait for minikube to be ready
-      command: minikube status
-      register: minikube_status
-      until: minikube_status.rc == 0
-      retries: 5
+      shell: minikube status
+      register: status_output
+      until: status_output.rc == 0
+      retries: 6
       delay: 10
       
-    - name: Get minikube IP
-      command: minikube ip
-      register: minikube_ip
+    - name: Get minikube status
+      command: minikube status
+      register: minikube_status
       
-    - name: Ensure .kube directory exists
+    - name: Create kube config directory
       file:
-        path: ~/.kube
+        path: "{{ ansible_env.HOME }}/.kube"
         state: directory
         mode: '0755'
-    
-    - name: Copy minikube config
-      command: minikube kubectl -- config view --flatten
-      register: kube_config
-      
-    - name: Save kubectl config
-      copy:
-        content: "{{ kube_config.stdout }}"
-        dest: ~/.kube/config
-        mode: '0600'
         
+    - name: Copy kube config
+      shell: |
+        minikube kubectl -- config view --flatten > {{ ansible_env.HOME }}/.kube/config
+        chmod 600 {{ ansible_env.HOME }}/.kube/config
+        
+    - name: Wait for kubernetes API to be available
+      shell: kubectl get nodes
+      register: api_status
+      until: api_status.rc == 0
+      retries: 6
+      delay: 10
+      
     - name: create new deployment
       command: kubectl apply -f /home/ubuntu/Deployment.yaml
       environment:
-        KUBECONFIG: ~/.kube/config
-        
+        KUBECONFIG: "{{ ansible_env.HOME }}/.kube/config"
+      
     - name: create new service
       command: kubectl apply -f /home/ubuntu/Service.yaml
       environment:
-        KUBECONFIG: ~/.kube/config
+        KUBECONFIG: "{{ ansible_env.HOME }}/.kube/config"
