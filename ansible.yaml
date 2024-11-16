@@ -1,6 +1,7 @@
-- hosts: all
+- hosts: webapp-server
   become: true
   tasks:
+
     - name: create new deployment
       command: kubectl apply -f /home/ubuntu/Deployment.yaml
       environment:
