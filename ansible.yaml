@@ -1,26 +1,6 @@
 - hosts: all
   become: true
   tasks:
-    - name: Get minikube IP
-      command: minikube ip
-      register: minikube_ip
-      
-    - name: Ensure .kube directory exists
-      file:
-        path: ~/.kube
-        state: directory
-        mode: '0755'
-    
-    - name: Copy minikube config
-      command: minikube kubectl -- config view --flatten
-      register: kube_config
-      
-    - name: Save kubectl config
-      copy:
-        content: "{{ kube_config.stdout }}"
-        dest: ~/.kube/config
-        mode: '0600'
-        
     - name: create new deployment
       command: kubectl apply -f /home/ubuntu/Deployment.yaml
       environment:
