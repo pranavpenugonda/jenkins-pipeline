@@ -1,13 +1,6 @@
 - hosts: all
   become: true
   tasks:
-    - name: Wait for minikube to be ready
-      command: minikube status
-      register: minikube_status
-      until: minikube_status.rc == 0
-      retries: 5
-      delay: 10
-      
     - name: Get minikube IP
       command: minikube ip
       register: minikube_ip
