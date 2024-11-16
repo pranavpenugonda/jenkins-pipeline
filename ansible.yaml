@@ -14,8 +14,8 @@
       shell: minikube status
       register: status_output
       until: status_output.rc == 0
-      retries: 6
-      delay: 10
+      retries: 3
+      delay: 5
       become: false
       
     - name: Create kube config directory
@@ -35,8 +35,8 @@
       shell: kubectl get nodes
       register: api_status
       until: api_status.rc == 0
-      retries: 6
-      delay: 10
+      retries: 3
+      delay: 5
       become: false
       
     - name: create new deployment
