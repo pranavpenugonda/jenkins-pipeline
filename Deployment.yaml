@@ -1,20 +1,20 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-   name: webapp-deployment
+  name: webapp-deployment
 spec:
-   replicas: 3
-   selector:     
-      matchLabels:
-         app: webapp-deployment
-   template:
-      metadata:
-         labels:
-            app: webapp-deployment
-      spec:
-         containers:
-            - name: webapp-deployment
-              image: pranavpenugonda/jenkins-pipeline
-              imagePullPolicy: Always
-              ports:
-               - containerPort: 80
+  replicas: 3
+  selector:     
+    matchLabels:
+      app: webapp-deployment
+  template:
+    metadata:
+      labels:
+        app: webapp-deployment
+    spec:
+      containers:
+      - name: webapp-deployment
+        image: pranavpenugonda/jenkins-pipeline
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
