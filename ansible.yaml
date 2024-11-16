@@ -3,12 +3,12 @@
   tasks:
 
     - name: create new deployment
-      command: kubectl apply --validate=true --dry-run=client -f /home/ubuntu/Deployment.yaml
+      command: kubectl apply --validate=false --dry-run=client -f /home/ubuntu/Deployment.yaml
 
       environment:
-        KUBECONFIG: ~/.kube/config
+        KUBECONFIG: /home/ubuntu/.kube/config
         
     - name: create new service
-      command: kubectl apply -f /home/ubuntu/Service.yaml
+      command: kubectl apply --validate=false -f /home/ubuntu/Service.yaml
       environment:
-        KUBECONFIG: ~/.kube/config
+        KUBECONFIG: /home/ubuntu/.kube/config
