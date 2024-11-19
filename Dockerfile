@@ -8,9 +8,9 @@ RUN apt-get update && apt-get install -y apache2
 WORKDIR /var/www/html/
 
 # Copy your HTML, CSS, and JS files into the container
-COPY todo_item_dynamically.html /var/www/html/
-COPY todo_item_dynamically.css /var/www/html/
-COPY todo_item_dynamically.js /var/www/html/
+COPY wikipedia.html /var/www/html/
+COPY wikipedia.css /var/www/html/
+COPY wikipedia.js /var/www/html/
 
 # Open the necessary ports: 80 for HTTP
 EXPOSE 80
